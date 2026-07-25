@@ -191,3 +191,9 @@ select:focus {
   margin-top: 0.2em;
   color: rgb(121, 16, 16);
 }
+
+@media screen and (max-width: 480px) {
+  form-row:first-child {
+    flex-direction: column;
+  }
+}
