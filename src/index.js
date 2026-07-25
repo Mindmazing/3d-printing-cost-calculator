@@ -30,12 +30,15 @@ const main = (() => {
   class User {
     static defaultData = {
       filamentTypes: [
-        { name: "PLA", spoolPrice: 769, id: crypto.randomUUID() },
-        { name: "PET", spoolPrice: 769, id: crypto.randomUUID() },
+        {
+          name: "PLA",
+          spoolPrice: 769,
+          id: crypto.randomUUID(),
+          maintenanceRate: 6.25,
+        },
       ],
       costOfKWH: 5.98,
       printerKWConsumption: 0.24,
-      printerMaintenanceRate: 6.25,
     };
     static data = {};
 
@@ -158,10 +161,44 @@ const main = (() => {
       showError(DomElements.timeAmountMinutesInput, "");
     }
 
+    if (
+      DomElements.timeAmountHoursInput.value === "00" &&
+      DomElements.timeAmountMinutesInput.value === "00" &&
+      DomElements.timeAmountSecondsInput.value === "00"
+    ) {
+      showError(
+        DomElements.timeAmountHoursInput,
+        "Tienes que ingresar un tiempo",
+      );
+      showError(
+        DomElements.timeAmountMinutesInput,
+        "Tienes que ingresar un tiempo",
+      );
+      showError(
+        DomElements.timeAmountSecondsInput,
+        "Tienes que ingresar un tiempo",
+      );
+      valid = false;
+    } else {
+      showError(DomElements.timeAmountHoursInput, "");
+      showError(DomElements.timeAmountMinutesInput, "");
+      showError(DomElements.timeAmountSecondsInput, "");
+    }
+
     return valid;
   }
 
   DomElements.form.addEventListener("submit", (event) => {
+    if (DomElements.timeAmountHoursInput.value === "") {
+      DomElements.timeAmountHoursInput.value = "00";
+    }
+    if (DomElements.timeAmountMinutesInput.value === "") {
+      DomElements.timeAmountMinutesInput.value = "00";
+    }
+    if (DomElements.timeAmountSecondsInput.value === "") {
+      DomElements.timeAmountSecondsInput.value = "00";
+    }
+
     event.preventDefault();
     if (validInputs()) {
       const hours = +DomElements.timeAmountHoursInput.value;
@@ -199,7 +236,7 @@ const main = (() => {
     const electricityCost =
       totalHours * User.data.printerKWConsumption * User.data.costOfKWH;
     const materialCost = filamentType.spoolPrice * (grams / 1000);
-    const maintenanceCost = User.data.printerMaintenanceRate * totalHours;
+    const maintenanceCost = filamentType.maintenanceRate * totalHours;
     const totalCost = electricityCost + materialCost + maintenanceCost;
     return (Math.round(totalCost * 100) / 100).toFixed(2);
   }
