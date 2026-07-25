@@ -97,6 +97,7 @@ select {
   border-radius: 0.5em;
   height: 2.5em;
   vertical-align: middle;
+  outline: 1px solid var(--primary-color);
 }
 
 .form-container {
@@ -167,4 +168,26 @@ form button:hover {
 
 .calculation-results-container p:last-child {
   font-weight: bold;
+}
+
+input:user-valid,
+select:user-valid {
+  outline: 1px solid green;
+}
+
+input:user-invalid,
+select:user-invalid {
+  outline: 1px solid rgb(121, 16, 16);
+}
+
+input:focus,
+select:focus {
+  outline: 1px solid var(--accent-color);
+}
+
+.error-message {
+  height: 1.5em;
+  font-size: 0.8rem;
+  margin-top: 0.2em;
+  color: rgb(121, 16, 16);
 }

@@ -36,7 +36,7 @@
     <main>
       <div class="form-container">
         <h1>Calcula el costo de impresion</h1>
-        <form id="cost-calculator-form" action="" novalidate>
+        <form id="cost-calculator-form" novalidate>
           <div class="form-row">
             <div class="form-input">
               <label for="filament-amount">Cantidad de Filamento (g)</label>
@@ -45,15 +45,19 @@
                 name="filament-amount"
                 id="filament-amount"
                 placeholder="Cantidad de Filamento (g)"
+                required
+                min="1"
               />
+              <div class="error-message"></div>
             </div>
             <div class="form-input">
               <label for="type-of-filament">Tipo de Filamento</label>
-              <select name="type-of-filament" id="type-of-filament">
+              <select name="type-of-filament" id="type-of-filament" required>
                 <option disabled selected hidden value="">
                   Tipo de Filamento
                 </option>
               </select>
+              <div class="error-message"></div>
             </div>
           </div>
           <div class="form-row">
@@ -64,7 +68,10 @@
                 name="time-amount-hours"
                 id="time-amount-hours"
                 placeholder="HH"
+                required
+                min="0"
               />
+              <div class="error-message"></div>
             </div>
             <div class="form-input">
               <label for="time-amount-minutes">Minutos</label>
@@ -73,7 +80,10 @@
                 name="time-amount-minutes"
                 id="time-amount-minutes"
                 placeholder="MM"
+                required
+                min="0"
               />
+              <div class="error-message"></div>
             </div>
             <div class="form-input">
               <label for="time-amount-seconds">Segundos</label>
@@ -82,7 +92,10 @@
                 name="time-amount-seconds"
                 id="time-amount-seconds"
                 placeholder="SS"
+                required
+                min="0"
               />
+              <div class="error-message"></div>
             </div>
           </div>
           <div class="form-row">
