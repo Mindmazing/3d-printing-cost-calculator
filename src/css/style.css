@@ -192,8 +192,8 @@ select:focus {
   color: rgb(121, 16, 16);
 }
 
-@media screen and (max-width: 480px) {
-  form-row:first-child {
+@media screen and (max-width: 500px) {
+  .form-row:first-child {
     flex-direction: column;
   }
 }
