@@ -110,5 +110,67 @@
         </div>
       </div>
     </main>
+    <div id="settings-popup">
+      <form id="settings-form">
+        <h2>Ajustes de Calculadora</h2>
+        <div class="form-row">
+          <div class="form-input">
+            <label for="energy-consumption"
+              >Consumo de Energia de impresora (KW)</label
+            >
+            <input
+              type="number"
+              name="energy-consumption"
+              id="energy-consumption"
+              placeholder="00"
+              required
+              min="0"
+            />
+            <div class="error-message"></div>
+          </div>
+          <div class="form-input">
+            <label for="cost-of-energy">Costo de Energia por KWH</label>
+            <input
+              type="number"
+              name="cost-of-energy"
+              id="cost-of-energy"
+              placeholder="00.00"
+              required
+              min="0"
+            />
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="filament-types-container">
+          <h3>Filamentos</h3>
+          <div class="form-row">
+            <div class="form-input">
+              <label for="">Nombre</label>
+              <input type="text" required placeholder="Nombre de Material" />
+            </div>
+            <div class="form-input">
+              <label for="">Precio de Rollo</label>
+              <input type="text" required min="0" placeholder="00.00" />
+            </div>
+            <div class="form-input">
+              <label for="">Tasa de Mantenimiento</label>
+              <input type="number" required min="0" placeholder="00.00" />
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-input">
+            <button type="button" id="add-filament-btn">
+              Agregar Filamento
+            </button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-input">
+            <button type="submit">Guardar Cambios</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </body>
 </html>
