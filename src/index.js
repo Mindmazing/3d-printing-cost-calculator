@@ -28,8 +28,10 @@ const main = (() => {
       "#energy-consumption",
     );
     static addFilamentButton = document.querySelector("#add-filament-btn");
+    static settingsForm = document.querySelector("#settings-form");
 
     static addSelectOptions() {
+      DomElements.filamentTypeSelect.innerHTML = "";
       for (let filamentType of User.filamentTypes()) {
         let option = document.createElement("option");
         option.value = filamentType.id;
@@ -46,16 +48,16 @@ const main = (() => {
         formRow.classList.add("form-row");
         formRow.innerHTML = `
            <div class="form-input">
-              <label for="filament-name">Nombre</label>
-              <input type="text" required placeholder="Nombre" value="${filamentType.name}" id="filament-name"/>
+              <label for="filament-name_${filamentType.id}">Nombre</label>
+              <input type="text" required placeholder="Nombre" value="${filamentType.name}" id="filament-name_${filamentType.id}"/>
             </div>
             <div class="form-input">
-              <label for="price-of-spool">Precio de Rollo</label>
-              <input type="text" required min="0" placeholder="00.00" value="${filamentType.spoolPrice}" id="price-of-spool" step="0.01" />
+              <label for="price-of-spool_${filamentType.id}">Precio de Rollo</label>
+              <input type="text" required min="0" placeholder="00.00" value="${filamentType.spoolPrice}" id="price-of-spool_${filamentType.id}" step="0.01" />
             </div>
             <div class="form-input">
-              <label for="maintenance-rate">Tasa de Mantenimiento</label>
-              <input type="number" required min="0" placeholder="00.00" value="${filamentType.maintenanceRate}" id="maintenance-rate" step="0.01" />
+              <label for="maintenance-rate_${filamentType.id}">Tasa de Mantenimiento</label>
+              <input type="number" required min="0" placeholder="00.00" value="${filamentType.maintenanceRate}" id="maintenance-rate_${filamentType.id}" step="0.01" />
             </div>
         `;
         DomElements.settingsFilamentTypesContainer.appendChild(formRow);
@@ -91,11 +93,11 @@ const main = (() => {
     }
 
     static saveData() {
-      localStorage.setItem("config-data", User.data);
+      localStorage.setItem("config-data", JSON.stringify(User.data));
     }
 
     static getFilamentById(filamentId) {
-      let filamentType = {};
+      let filamentType = false;
       User.filamentTypes().forEach((element) => {
         if (element.id === filamentId) {
           filamentType = element;
@@ -289,21 +291,56 @@ const main = (() => {
   DomElements.addFilamentButton.addEventListener("click", (event) => {
     let newFilamentFields = document.createElement("div");
     newFilamentFields.classList.add("form-row");
-    newFilamentFields.setAttribute("data-filament-id", crypto.randomUUID());
+    const newFilamentId = crypto.randomUUID();
+    newFilamentFields.setAttribute("data-filament-id", newFilamentId);
     newFilamentFields.innerHTML = `
            <div class="form-input">
-              <label for="filament-name">Nombre</label>
-              <input type="text" required placeholder="Nombre"  id="filament-name"/>
+              <label for="filament-name_${newFilamentId}">Nombre</label>
+              <input type="text" required placeholder="Nombre"  id="filament-name_${newFilamentId}" data-filament-name=""/>
             </div>
             <div class="form-input">
-              <label for="price-of-spool">Precio de Rollo</label>
-              <input type="text" required min="0" placeholder="00.00"  id="price-of-spool" step="0.01" />
+              <label for="price-of-spool_${newFilamentId}">Precio de Rollo</label>
+              <input type="text" required min="0" placeholder="00.00"  id="price-of-spool_${newFilamentId}" step="0.01" />
             </div>
             <div class="form-input">
-              <label for="maintenance-rate">Tasa de Mantenimiento</label>
-              <input type="number" required min="0" placeholder="00.00"  id="maintenance-rate" step="0.01" />
+              <label for="maintenance-rate_${newFilamentId}">Tasa de Mantenimiento</label>
+              <input type="number" required min="0" placeholder="00.00"  id="maintenance-rate_${newFilamentId}" step="0.01" />
             </div>
         `;
     DomElements.settingsFilamentTypesContainer.appendChild(newFilamentFields);
+  });
+
+  DomElements.settingsForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    // save energy consumption
+    User.data.printerKWConsumption =
+      +DomElements.settingsEnergyConsumptionInput.value;
+    // save cost of KWH
+    User.data.costOfKWH = +DomElements.settingsCostOfElectricityInput.value;
+
+    // get every filament type
+    const filamentTypesDom =
+      DomElements.settingsFilamentTypesContainer.querySelectorAll(".form-row");
+
+    const filamentTypes = [];
+
+    filamentTypesDom.forEach((element) => {
+      let filamentId = element.getAttribute("data-filament-id");
+      let filamentObject = {
+        name: element.querySelector(`#filament-name_${filamentId}`).value,
+        spoolPrice: +element.querySelector(`#price-of-spool_${filamentId}`)
+          .value,
+        id: filamentId,
+        maintenanceRate: +element.querySelector(
+          `#maintenance-rate_${filamentId}`,
+        ).value,
+      };
+      filamentTypes.push(filamentObject);
+    });
+    User.data.filamentTypes = filamentTypes;
+    // save data
+    User.saveData();
+    DomElements.addSelectOptions();
+    DomElements.settingsPopUp.style.display = "none";
   });
 })();
