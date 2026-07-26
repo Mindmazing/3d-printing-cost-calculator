@@ -27,6 +27,7 @@ const main = (() => {
     static settingsEnergyConsumptionInput = document.querySelector(
       "#energy-consumption",
     );
+    static addFilamentButton = document.querySelector("#add-filament-btn");
 
     static addSelectOptions() {
       for (let filamentType of User.filamentTypes()) {
@@ -41,19 +42,20 @@ const main = (() => {
       DomElements.settingsFilamentTypesContainer.innerHTML = "";
       for (let filamentType of User.filamentTypes()) {
         let formRow = document.createElement("div");
+        formRow.setAttribute("data-filament-id", filamentType.id);
         formRow.classList.add("form-row");
         formRow.innerHTML = `
-           <div class="form-input" data-filament-id="${filamentType.id}">
+           <div class="form-input">
               <label for="filament-name">Nombre</label>
               <input type="text" required placeholder="Nombre" value="${filamentType.name}" id="filament-name"/>
             </div>
             <div class="form-input">
               <label for="price-of-spool">Precio de Rollo</label>
-              <input type="text" required min="0" placeholder="00.00" value="${filamentType.spoolPrice}" id="price-of-spool"/>
+              <input type="text" required min="0" placeholder="00.00" value="${filamentType.spoolPrice}" id="price-of-spool" step="0.01" />
             </div>
             <div class="form-input">
               <label for="maintenance-rate">Tasa de Mantenimiento</label>
-              <input type="number" required min="0" placeholder="00.00" value="${filamentType.maintenanceRate} id="maintenance-rate"/>
+              <input type="number" required min="0" placeholder="00.00" value="${filamentType.maintenanceRate}" id="maintenance-rate" step="0.01" />
             </div>
         `;
         DomElements.settingsFilamentTypesContainer.appendChild(formRow);
@@ -284,4 +286,24 @@ const main = (() => {
   });
 
   //add filament button
+  DomElements.addFilamentButton.addEventListener("click", (event) => {
+    let newFilamentFields = document.createElement("div");
+    newFilamentFields.classList.add("form-row");
+    newFilamentFields.setAttribute("data-filament-id", crypto.randomUUID());
+    newFilamentFields.innerHTML = `
+           <div class="form-input">
+              <label for="filament-name">Nombre</label>
+              <input type="text" required placeholder="Nombre"  id="filament-name"/>
+            </div>
+            <div class="form-input">
+              <label for="price-of-spool">Precio de Rollo</label>
+              <input type="text" required min="0" placeholder="00.00"  id="price-of-spool" step="0.01" />
+            </div>
+            <div class="form-input">
+              <label for="maintenance-rate">Tasa de Mantenimiento</label>
+              <input type="number" required min="0" placeholder="00.00"  id="maintenance-rate" step="0.01" />
+            </div>
+        `;
+    DomElements.settingsFilamentTypesContainer.appendChild(newFilamentFields);
+  });
 })();
