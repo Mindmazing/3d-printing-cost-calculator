@@ -154,7 +154,7 @@ form button:hover {
   opacity: 0.5;
 }
 
-.form-row:last-child {
+form > .form-row:last-child {
   margin-top: 2em;
 }
 
@@ -211,6 +211,10 @@ select:focus {
   height: 100vh;
   background-color: #3e3939ab;
   padding: 2em;
+}
+
+#settings-popup {
+  display: none;
 }
 
 #settings-popup > form {

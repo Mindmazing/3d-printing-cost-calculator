@@ -17,13 +17,46 @@ const main = (() => {
     static timeAmountSecondsInput = document.querySelector(
       "#time-amount-seconds",
     );
+    static closeSettingBtn = document.querySelector("#close-settings-btn");
+    static settingsPopUp = document.querySelector("#settings-popup");
+    static settingsFilamentTypesContainer = document.querySelector(
+      ".filament-types-container",
+    );
+    static settingsCostOfElectricityInput =
+      document.querySelector("#cost-of-energy");
+    static settingsEnergyConsumptionInput = document.querySelector(
+      "#energy-consumption",
+    );
 
     static addSelectOptions() {
       for (let filamentType of User.filamentTypes()) {
-        const option = document.createElement("option");
+        let option = document.createElement("option");
         option.value = filamentType.id;
         option.textContent = filamentType.name;
         DomElements.filamentTypeSelect.appendChild(option);
+      }
+    }
+
+    static loadFilamentTypesToSettings() {
+      DomElements.settingsFilamentTypesContainer.innerHTML = "";
+      for (let filamentType of User.filamentTypes()) {
+        let formRow = document.createElement("div");
+        formRow.classList.add("form-row");
+        formRow.innerHTML = `
+           <div class="form-input" data-filament-id="${filamentType.id}">
+              <label for="filament-name">Nombre</label>
+              <input type="text" required placeholder="Nombre" value="${filamentType.name}" id="filament-name"/>
+            </div>
+            <div class="form-input">
+              <label for="price-of-spool">Precio de Rollo</label>
+              <input type="text" required min="0" placeholder="00.00" value="${filamentType.spoolPrice}" id="price-of-spool"/>
+            </div>
+            <div class="form-input">
+              <label for="maintenance-rate">Tasa de Mantenimiento</label>
+              <input type="number" required min="0" placeholder="00.00" value="${filamentType.maintenanceRate} id="maintenance-rate"/>
+            </div>
+        `;
+        DomElements.settingsFilamentTypesContainer.appendChild(formRow);
       }
     }
   }
@@ -226,10 +259,6 @@ const main = (() => {
     DomElements.costResultContainer.querySelector("p").textContent = cost;
   }
 
-  DomElements.settingsButton.addEventListener("clock", (event) => {
-    console.log("Settings");
-  });
-
   function calcPrintCost(filamentType, hours, minutes, seconds, grams) {
     // calculate costs
     const totalHours = hours + minutes / 60 + seconds / 3600;
@@ -240,4 +269,19 @@ const main = (() => {
     const totalCost = electricityCost + materialCost + maintenanceCost;
     return (Math.round(totalCost * 100) / 100).toFixed(2);
   }
+
+  DomElements.settingsButton.addEventListener("click", (event) => {
+    // show settings
+    DomElements.settingsPopUp.style.display = "flex";
+    DomElements.settingsEnergyConsumptionInput.value =
+      User.data.printerKWConsumption;
+    DomElements.settingsCostOfElectricityInput.value = User.data.costOfKWH;
+    DomElements.loadFilamentTypesToSettings();
+  });
+
+  DomElements.closeSettingBtn.addEventListener("click", (event) => {
+    DomElements.settingsPopUp.style.display = "none";
+  });
+
+  //add filament button
 })();

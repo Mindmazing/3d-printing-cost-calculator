@@ -111,7 +111,7 @@
       </div>
     </main>
     <div id="settings-popup">
-      <form id="settings-form">
+      <form id="settings-form" novalidate>
         <h2>Ajustes de Calculadora</h2>
         <div class="form-row">
           <div class="form-input">
@@ -124,9 +124,7 @@
               id="energy-consumption"
               placeholder="00"
               required
-              min="0"
             />
-            <div class="error-message"></div>
           </div>
           <div class="form-input">
             <label for="cost-of-energy">Costo de Energia por KWH</label>
@@ -136,28 +134,12 @@
               id="cost-of-energy"
               placeholder="00.00"
               required
-              min="0"
             />
-            <div class="error-message"></div>
           </div>
         </div>
-        <div class="filament-types-container">
-          <h3>Filamentos</h3>
-          <div class="form-row">
-            <div class="form-input">
-              <label for="">Nombre</label>
-              <input type="text" required placeholder="Nombre de Material" />
-            </div>
-            <div class="form-input">
-              <label for="">Precio de Rollo</label>
-              <input type="text" required min="0" placeholder="00.00" />
-            </div>
-            <div class="form-input">
-              <label for="">Tasa de Mantenimiento</label>
-              <input type="number" required min="0" placeholder="00.00" />
-            </div>
-          </div>
-        </div>
+        <h3>Filamentos</h3>
+
+        <div class="filament-types-container"></div>
         <div class="form-row">
           <div class="form-input">
             <button type="button" id="add-filament-btn">
@@ -168,6 +150,9 @@
         <div class="form-row">
           <div class="form-input">
             <button type="submit">Guardar Cambios</button>
+          </div>
+          <div class="form-input">
+            <button type="button" id="close-settings-btn">Cancelar</button>
           </div>
         </div>
       </form>
