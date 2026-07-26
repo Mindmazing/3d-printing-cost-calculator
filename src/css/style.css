@@ -197,6 +197,9 @@ select:focus {
   form > .form-row:nth-of-type(1) {
     flex-direction: column;
   }
+  #logo {
+    font-size: 1.8rem;
+  }
 }
 
 /* form pop up styles */
