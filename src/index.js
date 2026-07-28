@@ -29,6 +29,8 @@ const main = (() => {
     );
     static addFilamentButton = document.querySelector("#add-filament-btn");
     static settingsForm = document.querySelector("#settings-form");
+    static settingsRevenueMarginInput =
+      document.querySelector("#revenue-margin");
 
     static addSelectOptions() {
       DomElements.filamentTypeSelect.innerHTML = "";
@@ -76,6 +78,7 @@ const main = (() => {
       ],
       costOfKWH: 5.98,
       printerKWConsumption: 0.24,
+      revenueMargin: 60,
     };
     static data = {};
 
@@ -271,7 +274,9 @@ const main = (() => {
     const materialCost = filamentType.spoolPrice * (grams / 1000);
     const maintenanceCost = filamentType.maintenanceRate * totalHours;
     const totalCost = electricityCost + materialCost + maintenanceCost;
-    return (Math.round(totalCost * 100) / 100).toFixed(2);
+    const totalRevenue = (User.data.revenueMargin * totalCost) / 100;
+    const total = totalCost + totalRevenue;
+    return (Math.round(total * 100) / 100).toFixed(2);
   }
 
   DomElements.settingsButton.addEventListener("click", (event) => {
@@ -280,6 +285,7 @@ const main = (() => {
     DomElements.settingsEnergyConsumptionInput.value =
       User.data.printerKWConsumption;
     DomElements.settingsCostOfElectricityInput.value = User.data.costOfKWH;
+    DomElements.settingsRevenueMarginInput.value = User.data.revenueMargin;
     DomElements.loadFilamentTypesToSettings();
   });
 
@@ -317,6 +323,8 @@ const main = (() => {
       +DomElements.settingsEnergyConsumptionInput.value;
     // save cost of KWH
     User.data.costOfKWH = +DomElements.settingsCostOfElectricityInput.value;
+    // save revenue margin
+    User.data.revenueMargin = +DomElements.settingsRevenueMarginInput.value;
 
     // get every filament type
     const filamentTypesDom =
