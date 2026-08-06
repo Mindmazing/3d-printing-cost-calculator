@@ -65,6 +65,7 @@ const main = (() => {
         DomElements.settingsFilamentTypesContainer.appendChild(formRow);
       }
     }
+    22;
   }
   class User {
     static defaultData = {
@@ -276,6 +277,14 @@ const main = (() => {
     const totalCost = electricityCost + materialCost + maintenanceCost;
     const totalRevenue = (User.data.revenueMargin * totalCost) / 100;
     const total = totalCost + totalRevenue;
+
+    showDetailPrices(
+      electricityCost,
+      totalRevenue,
+      materialCost,
+      maintenanceCost,
+    );
+
     return (Math.round(total * 100) / 100).toFixed(2);
   }
 
@@ -351,4 +360,34 @@ const main = (() => {
     DomElements.addSelectOptions();
     DomElements.settingsPopUp.style.display = "none";
   });
+
+  const showDetailPrices = (
+    costOfElectricity,
+    revenueMargin,
+    costOfMaterial,
+    costOfMaintenance,
+  ) => {
+    const costOfElectricityDetail = document.querySelector(
+      ".cost-of-electricity-detail p:nth-child(2)",
+    );
+    const revenueMarginDetail = document.querySelector(
+      ".revenue-margin-detail p:nth-child(2)",
+    );
+    const costofMaterialDetail = document.querySelector(
+      ".cost-of-material-detail p:nth-child(2)",
+    );
+    const costOfMaintenanceDetail = document.querySelector(
+      ".cost-of-maintenance-detail p:nth-child(2)",
+    );
+
+    costOfElectricity = (Math.round(costOfElectricity * 100) / 100).toFixed(2);
+    revenueMargin = (Math.round(revenueMargin * 100) / 100).toFixed(2);
+    costOfMaterial = (Math.round(costOfMaterial * 100) / 100).toFixed(2);
+    costOfMaintenance = (Math.round(costOfMaintenance * 100) / 100).toFixed(2);
+
+    costOfElectricityDetail.textContent = costOfElectricity;
+    revenueMarginDetail.textContent = revenueMargin;
+    costofMaterialDetail.textContent = costOfMaterial;
+    costOfMaintenanceDetail.textContent = costOfMaintenance;
+  };
 })();

@@ -83,7 +83,7 @@ main {
   border-radius: 1em;
   display: flex;
   justify-content: center;
-  padding: 1em;
+  padding: 4em;
   align-items: center;
 }
 
@@ -234,4 +234,33 @@ label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.price-detail-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+  border: 1px solid var(--accent-color);
+  border-radius: 0.5em;
+}
+
+.price-detail-container > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border-bottom: 1px solid var(--accent-color);
+  gap: 1em;
+}
+
+.price-detail-container > div:last-child {
+  border-bottom: none;
+}
+
+.price-detail-container > div > p:first-child {
+  width: 70%;
+}
+
+.price-detail-container > div > p:last-child {
+  font-weight: bold;
 }
